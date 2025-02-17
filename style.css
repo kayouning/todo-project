@@ -44,3 +44,7 @@ padding: 1em;
   justify-content: space-between;
   padding: 15px 15px;
 }
+
+.task-done{
+  text-decoration: line-through;
+}

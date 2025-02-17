@@ -18,8 +18,13 @@ addButton.addEventListener("click",addTask)
 
 
 function addTask(){
-  let userContent = userInput.value
-  taskList.push(userContent);
+  let task = {
+    id:randomIDGenerate(),
+    taskContent: userInput.value,
+    isComplete: false,
+    delete:false
+  }
+  taskList.push(task);
   console.log(taskList);
   render();
 }
@@ -27,15 +32,52 @@ function addTask(){
 function render(){
   let resultHTML = "";
 for(let i =0;i<taskList.length;i++){
+if(taskList[i].isComplete == true){
   resultHTML += `<div class="task">
-        <div>${taskList[i]}</div>
+        <div class = "task-done">${taskList[i].taskContent}</div>
         <div>
-          <button id="check-button">체크</button>
-          <button id="delete-button">삭제</button>
+          <button onClick="toggleComplete('${taskList[i].id}')">체크</button>
+          <button onClick="deleteTask('${taskList[i].id}')">삭제</button>
         </div>
       </div>`;
+}else{
+  resultHTML += `<div class="task">
+  <div>${taskList[i].taskContent}</div>
+  <div>
+    <button onClick="toggleComplete('${taskList[i].id}')">체크</button>
+    <button onClick="deleteTask('${taskList[i].id}')">삭제</button>
+  </div>
+</div>`;
+}
+  
+}
+
+  document.getElementById("task-board").innerHTML = resultHTML
+}//function render
+
+
+function toggleComplete(id){
+  for(let i = 0; i<taskList.length;i++){
+    if(taskList[i].id == id){
+      taskList[i].isComplete = !taskList[i].isComplete;
+      break;
+    }
+  }
+  render();
+  console.log(taskList)
+}
+
+function deleteTask(id){
+  for(let i = 0; i<taskList.length;i++){
+    if(taskList[i].id == id){
+      taskList.splice(i,1)
+      break;
+    }
+  }
+  render();
 }
 
 
-  document.getElementById("task-board").innerHTML = resultHTML
+function randomIDGenerate(){
+  return Math.random().toString(36).substr(2, 16);;
 }
